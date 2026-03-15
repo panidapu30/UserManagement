@@ -21,7 +21,7 @@ var summaries = new[]
 
 app.MapGet("/weatherforecast", () =>
 {
-    var forecast =  Enumerable.Range(1, 10).Select(index =>
+    var forecast =  Enumerable.Range(1, 5).Select(index =>
         new WeatherForecast
         (
             DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
@@ -38,4 +38,21 @@ app.Run();
 record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
 {
     public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+    public string TemperatureDescription => TemperatureC switch
+    {
+        <= 0 => "Freezing",
+        <= 10 => "Cold",
+        <= 20 => "Cool",
+        <= 30 => "Mild",
+        <= 40 => "Warm",
+        _ => "Hot"
+    };
+    public string WeatherIcon => TemperatureC switch
+    {
+        <= 0 => "❄️",
+        <= 10 => "🌧️",
+        <= 20 => "⛅",
+        <= 30 => "☀️",
+        _ => "🔥"
+    };
 }
